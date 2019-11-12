@@ -47,11 +47,11 @@ TagManager:
   - name: BG
     uniqueID: 2301154647
     locked: 0
-  - name: Floor
-    uniqueID: 1717515241
-    locked: 0
   - name: Trees
     uniqueID: 3134080149
+    locked: 0
+  - name: Floor
+    uniqueID: 1717515241
     locked: 0
   - name: FG
     uniqueID: 1907295767
