@@ -44,7 +44,50 @@ public class SlingShot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        switch (slingshotState)
+        {
+            case SlingshotState.Idle:
+                InitializeBird();
+                DisplaySlingshotLineRenderers();
+
+                if(Input.GetMouseButtonDown(0)){
+                    Vector3 location = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    if(birdToThrow.GetComponent<CircleCollider2D>() == Physics2D.OverlapPoint(location)){
+                        slingshotState = SlingshotState.UserPulling;
+                    }
+                }
+                
+                break;
+            
+            case SlingshotState.UserPulling:
+                DisplaySlingshotLineRenderers();
+                if(Input.GetMouseButton(0)){
+                    Vector3 location =  Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    location.z = 0f;
+
+                    if(Vector3.Distance(location, slingshotMiddleVector) > 1.5f){
+                        var maxPosition = (location - slingshotMiddleVector).normalized * 1.5f + slingshotMiddleVector;
+                        birdToThrow.transform.position = maxPosition;
+                    }else{
+                        birdToThrow.transform.position = location;
+                    }
+                    var distance = Vector3.Distance(slingshotMiddleVector, birdToThrow.transform.position);
+                    DisplaySlingshotTrajectoryLineRenderer(distance);
+                }else{
+                    SetTrajectoryLineRendererActive(true);
+                    timeSinceThrown = Time.time;
+                    float distance = Vector3.Distance(slingshotMiddleVector, birdToThrow.transform.position);
+                    if(distance > 1){
+                        SetSlingshotLineRendererActive(false);
+                        slingshotState =SlingshotState.BirdFlying;
+                        ThrowBird(distance);
+                    }else{
+                        birdToThrow.transform.positionTo(distance/10, birdWaitPosition.position);
+                        InitializeBird();
+                    }
+                }
+                break;
+        }   
     }
 
     private void InitializeBird(){
