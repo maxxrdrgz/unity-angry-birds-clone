@@ -46,4 +46,57 @@ public class SlingShot : MonoBehaviour
     {
         
     }
+
+    private void InitializeBird(){
+        birdToThrow.transform.position = birdWaitPosition.position;
+        slingshotState = SlingshotState.Idle;
+        SetSlingshotLineRendererActive(true);
+    }
+
+    void SetSlingshotLineRendererActive(bool active){
+        slingshotLineRenderer1.enabled = active;
+        slingshotLineRenderer2.enabled = active;
+    }
+
+    void DisplaySlingshotLineRenderers(){
+        slingshotLineRenderer1.SetPosition(1, birdToThrow.transform.position);
+        slingshotLineRenderer2.SetPosition(1, birdToThrow.transform.position);
+    }
+
+    void SetTrajectoryLineRendererActive(bool active){
+        trajectoryLineRenderer.enabled = active;
+    }
+
+    void DisplaySlingshotTrajectoryLineRenderer(float distance){
+        SetTrajectoryLineRendererActive(true);
+        Vector3 v2 = slingshotMiddleVector - birdToThrow.transform.position;
+        int segmentCount = 15;
+
+        Vector2[] segments = new Vector2[segmentCount];
+
+        segments[0] = birdToThrow.transform.position;
+        Vector2 segVelocity = new Vector2(v2.x, v2.y) * throwSpeed * distance;
+
+        for(int i = 1; i < segmentCount; i++){
+            float time = i * Time.fixedDeltaTime * 5f;
+            segments[i] = segments[0] + segVelocity * time + 0.5f * Physics2D.gravity * Mathf.Pow(time, 2);
+        }
+
+        trajectoryLineRenderer.positionCount = segmentCount;
+        for(int i = 0; i < segmentCount; i++){
+            trajectoryLineRenderer.SetPosition(i, segments[i]);
+        }
+    }
+
+    private void ThrowBird(float distance){
+        Vector3 velocity = slingshotMiddleVector - birdToThrow.transform.position;
+
+        birdToThrow.GetComponent<Bird>().OnThrow();
+
+        birdToThrow.GetComponent<Rigidbody2D>().velocity = new Vector2(velocity.x, velocity.y) * throwSpeed * distance;
+
+        if(birdThrown != null){
+            birdThrown();
+        }
+    }
 }
