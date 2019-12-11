@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -37,7 +38,29 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        switch (gameState)
+        {
+            case GameState.Start:
+                if(Input.GetMouseButtonUp(0)){
+                    AnimateBirdToSlingshot();
+                }
+                break;
+
+            case GameState.Playing:
+                if(slingShot.slingshotState == SlingshotState.BirdFlying && (BricksBirdsPigsStoppedMoving() || Time.time - slingShot.timeSinceThrown > 5f)){
+                    slingShot.enabled = false;
+                    AnimateCameraToStartPosition();
+                    gameState = GameState.BirdMovingToSlingshot;
+                }
+                break;
+            
+            case GameState.Won:
+            case GameState.Lost:
+                if(Input.GetMouseButtonDown(0)){
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                }
+                break;
+        }
     }
 
     void AnimateBirdToSlingshot(){
