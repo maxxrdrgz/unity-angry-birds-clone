@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour
     {
         gameState = GameState.Start;
         slingShot.enabled = false;
+        slingShot.slingshotLineRenderer1.enabled = false;
+        slingShot.slingshotLineRenderer2.enabled = false;
 
         bricks = new List<GameObject>(GameObject.FindGameObjectsWithTag("Brick"));
         birds = new List<GameObject>(GameObject.FindGameObjectsWithTag("Bird"));
@@ -49,6 +51,8 @@ public class GameManager : MonoBehaviour
             case GameState.Playing:
                 if(slingShot.slingshotState == SlingshotState.BirdFlying && (BricksBirdsPigsStoppedMoving() || Time.time - slingShot.timeSinceThrown > 5f)){
                     slingShot.enabled = false;
+                    slingShot.slingshotLineRenderer1.enabled = false;
+                    slingShot.slingshotLineRenderer2.enabled = false;
                     AnimateCameraToStartPosition();
                     gameState = GameState.BirdMovingToSlingshot;
                 }
@@ -76,6 +80,8 @@ public class GameManager : MonoBehaviour
                 x.destroy();
                 gameState = GameState.Playing;
                 slingShot.enabled = true;
+                slingShot.slingshotLineRenderer1.enabled = true;
+                slingShot.slingshotLineRenderer2.enabled = true;
                 slingShot.birdToThrow = birds[currentBirdIndex];
             }
         );

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 9200555170188767421}
   - component: {fileID: 9200555170188767420}
   - component: {fileID: 9200555170188767423}
+  - component: {fileID: 2168667577786626288}
   m_Layer: 0
   m_Name: Pig
   m_TagString: Pig
@@ -217,3 +218,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &2168667577786626288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9200555170188767408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 576403c9413240146bb3d3652eec5c95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 150
+  spriteShownWhenHurt: {fileID: -180670601911014128, guid: b4124fe0ef9724942b08d7d759492f8c,
+    type: 3}
